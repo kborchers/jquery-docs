@@ -22,7 +22,7 @@ function git_pull( next ) {
     console.log( stdout );
     if ( error !== null ) {
       console.error( error );
-      exit( error.code );
+      process.exit( error.code );
     }
     next();
   });
