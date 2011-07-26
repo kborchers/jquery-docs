@@ -55,14 +55,9 @@
 							</li>
 						</ul>
 					</nav>
-					<header>
-						<h1>
-							<xsl:value-of select="@name"/>
-						</h1>
-					</header>
 					<section id="overview">
 						<header>
-							<h2>Overview</h2>
+							<h2 class="underline">Overview</h2>
 						</header>
 						<p>
 							<xsl:copy-of select="longdesc/node()"/>
@@ -70,7 +65,7 @@
 					</section>
 					<section id="options">
 						<header>
-							<h2>Options</h2>
+							<h2 class="underline">Options</h2>
 						</header>
 						<ul>
 							<xsl:for-each select="options/option">
@@ -98,7 +93,7 @@
 					</section>
 					<section id="methods">
 						<header>
-							<h2>Methods</h2>
+							<h2 class="underline">Methods</h2>
 						</header>
 						<ul>
 							<xsl:for-each select="methods/method">
@@ -116,7 +111,7 @@
 					</section>
 					<section id="events">
 						<header>
-							<h2>Events</h2>
+							<h2 class="underline">Events</h2>
 						</header>
 						<ul>
 							<xsl:for-each select="events/event">
@@ -134,13 +129,13 @@
 					</section>
 					<section id="theming">
 						<header>
-							<h2>Theming</h2>
+							<h2 class="underline">Theming</h2>
 						</header>
 						<xsl-copy-of select="theming/node()"/>
 					</section>
 					<section id="examples">
 						<header>
-							<h2>Example<xsl:if test="$number-examples &gt; 1">s</xsl:if></h2>
+							<h2 class="underline">Example<xsl:if test="$number-examples &gt; 1">s</xsl:if></h2>
 						</header>
 						<xsl:for-each select="example">
 							<h4>
