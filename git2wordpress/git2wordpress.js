@@ -32,7 +32,9 @@ function find_files( next ) {
   var finder = require( "findit" ).find( DOCS_DIR );
 
   finder.on( "file", function( file ) {
-    files.push({ path: file });
+    if ( file.split( "." ).slice( -1 )[ 0 ].toLowerCase() === "xml" ) {
+      files.push({ path: file });
+    }
   });
 
   finder.on( "end", next );
@@ -43,20 +45,16 @@ function process_files( next ) {
     join = Futures.join();
 
   files.forEach(function( file ) {
-    var dirname = file.path.split( "/" ).slice( -2 )[ 0 ],
-      filename_ext = file.path.split( "/" ).slice( -1 )[ 0 ],
-      filename = filename_ext.split( "." )[ 0 ],
+    var filename_ext = file.path.split( "/" ).slice( -1 )[ 0 ],
+      filename = filename_ext.split( "." ).slice( 0, -1 ).join( "." ),
       future = Futures.future();
 
     file.slug = filename;
-    if ( filename !== dirname ) {
-      file.slug = dirname + "-" + filename;
-    }
     file.contents = fs.readFileSync( file.path, "utf8" );
 
     join.add( future );
     exec( "git log -1 --format=%ci " + file.path, { cwd: GIT_DIR }, function( error, stdout, stderr ) {
-      file.commitdate = stdout.split( "\n" )[ 0 ];
+      file.commitdate = stdout.split( "\n" )[ 0 ] || (new Date()).toISOString();
       future.deliver( error );
     });
   });
@@ -65,12 +63,11 @@ function process_files( next ) {
 }
 
 function mysql_update( next ) {
-  var mysql = new require( "mysql" ).Client(),
+  var mysql = new require( "mysql" ).createClient(),
     join = Futures.join();
 
   mysql.user = DB_USER;
   mysql.password = DB_PASSWORD;
-  mysql.connect();
   mysql.useDatabase( DB_NAME );
 
   files.forEach(function( file ) {
@@ -94,9 +91,9 @@ function mysql_update( next ) {
 
         if ( !id ) { return defer(); }
 
-        mysql.query( 'UPDATE wp_posts SET `post_date`=?, `post_date_gmt`=?, `post_modified`=?, `post_modified_gmt`=?, '
+        mysql.query( 'UPDATE wp_posts SET `post_modified`=?, `post_modified_gmt`=?, '
           + '`post_content`=?, `guid`=? WHERE id=?',
-          [ file.commitdate, file.commitdate, file.commitdate, file.commitdate, file.contents, guid, id ],
+          [ file.commitdate, file.commitdate, file.contents, guid, id ],
           defer);
       });
   });
