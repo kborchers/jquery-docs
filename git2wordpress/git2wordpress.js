@@ -4,9 +4,11 @@ var HOST_NAME = "api.jqueryui.com",
   DB_NAME = "wordpress",
   DB_USER = "wordpress",
   DB_PASSWORD = "changeme",
+  SITE_ID = 2,
 
   exec = require( "child_process" ).exec,
   Futures = require( "futures" ),
+  et = require("elementtree"),
 
   files = [];
 
@@ -74,26 +76,28 @@ function mysql_update( next ) {
     var defer = join.add();
     Futures.sequence()
       .then(function(next) {
-        mysql.query( 'SELECT `id` FROM wp_posts WHERE `post_name`=? AND `post_type`="post"', [ file.slug ], next );
+        mysql.query( 'SELECT `id` FROM wp_' + SITE_ID + '_posts WHERE `post_name`=? AND `post_type`="post"', [ file.slug ], next );
       })
       .then(function( next, err, results, fields ) {
         if ( results.length ) {
           return next( err, results, fields );
         }
-        mysql.query( 'INSERT INTO wp_posts (post_author, post_title, post_name, comment_status, ping_status) '
+        mysql.query( 'INSERT INTO wp_' + SITE_ID + '_posts (post_author, post_title, post_name, comment_status, ping_status) '
           + ' VALUES (?, ?, ?, "closed", "closed")',
           [ 1, file.slug, file.slug ],
           next);
       })
       .then(function( next, err, results, fields ) {
         var id = results.insertId || results[0].id,
-          guid = "http://" + HOST_NAME + "/?p=" + id;
+          guid = "http://" + HOST_NAME + "/?p=" + id,
+          etree = et.parse(file.contents),
+          title = etree.findtext( ".//title" );
 
         if ( !id ) { return defer(); }
 
-        mysql.query( 'UPDATE wp_posts SET `post_modified`=?, `post_modified_gmt`=?, '
+        mysql.query( 'UPDATE wp_' + SITE_ID + '_posts SET `post_title`=?, `post_modified`=?, `post_modified_gmt`=?, '
           + '`post_content`=?, `guid`=? WHERE id=?',
-          [ file.commitdate, file.commitdate, file.contents, guid, id ],
+          [ title, file.commitdate, file.commitdate, file.contents, guid, id ],
           defer);
       });
   });
