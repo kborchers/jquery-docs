@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../../entries2html.xsl" ?>
+<entry name="tooltip" namespace="fn" type="Widget" widgetnamespace="ui">
+	<desc>
+		Customizable, themeable tooltips, replacing native tooltips.
+	</desc>
+	<longdesc>
+		<p>Tooltip replaces native tooltips, making them themable as well as  allowing various customizations:</p>
+
+		<ul>
+			<li>display other content than just the title, like inline footnotes or extra content retrieved via Ajax</li>
+			<li>customize the positioning, eg. to center the tooltip above elements</li>
+			<li>add extra classes to customize the appearance, for warning or error fields</li>
+		</ul>
+
+		<p>A fade animation is used to show and hide the tooltip, making the appearance a bit more organic, compared to just toggling the visiblity.</p>
+
+		<p>The <code>title</code> and <code>content</code> options need to stay in-sync. If you change one of them, you need to change the other.</p>
+	</longdesc>
+	<created>1.9</created>
+	<options>
+		<option name="content" default="function returning the title attribute">
+			<desc>The content of the tooltip. The callback can either return the content directly, or call the first argument, passing in the content, eg. for ajax content.</desc>
+			<type name="Function" />
+			<example>
+				function(response) {
+				  $.getJSON("tooltipcontent.html", response);
+				}
+			</example>
+		</option>
+		<option name="hide" default="true">
+			<desc>How to hide the tooltip.</desc>
+			<type name="Boolean" />
+			<type name="Object" />
+			<example>
+				{
+					effect: &#x22;explode&#x22;,
+					delay: 250
+				}
+			</example>
+		</option>
+		<option name="items" default="[title]">
+			<desc>A selector matched when activating a tooltip. Customize if you're using something other then the title attribute for the tooltip content, or if you need a different selector for event delegation.</desc>
+			<type name="Selector" />
+			<example>
+				&#x22;.tooltipped&#x22;
+			</example>
+		</option>
+		<option name="position" default="{ my: &#x22;left+15 top&#x22;, at: &#x22;left bottom&#x22;, collision: &#x22;flipfit flipfit&#x22; })">
+			<desc>Configuration for the Position  utility. The of property defaults to the target element, but can also be overriden.</desc>
+			<type name="Object" />
+			<example>
+				{ my: &#x22;center&#x22; }
+			</example>
+		</option>
+		<option name="show" default="true">
+			<desc>How to show the tooltip.</desc>
+			<type name="Boolean" />
+			<type name="Object" />
+			<example>
+				{
+					effect: &#x22;slideDown&#x22;,
+					delay: 250
+				}
+			</example>
+		</option>
+		<option name="tooltipClass" default="null">
+			<desc>
+				A class to add to the widget, can be used to display various tooltip types, like warnings or errors.
+
+				This may get replaced by the <a href="http://bugs.jqueryui.com/ticket/7053">classes option</a>.
+			</desc>
+			<type name="String" />
+			<example>
+				&#x22;ui-state-highlight&#x22;
+			</example>
+		</option>
+	</options>
+	<methods>
+		<method name="close">
+			<desc>
+				Programmatically close a tooltip. Sames rules as for <code>open</code> method.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="open">
+			<desc>
+				Programmatically open a tooltip. If the widget's element is the target, the event argument is optional. Otherwise you have to pass an event object with the <code>currentTarget</code> property pointing at the target.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+	</methods>
+	<events>
+		<event name="open" type="tooltipopen">
+			<desc>
+				Triggered when a tooltip is shown, triggered on focusin or mouseover.
+
+				Can be used further modify or position the widget, eg. have it follow the mouse movement.
+			</desc>
+			<argument name="event" type="Event" null="true">
+			</argument>
+			<argument name="ui" type="Object">
+				<desc>
+					Extra event data for the ui tooltip open event
+				</desc>
+				<property name="tooltip" type="jQuery">
+					<desc>The generated tooltip element</desc>
+				</property>
+			</argument>
+		</event>
+		<event name="close" type="tooltipclose">
+			<desc>
+				Triggered when a tooltip is shown, triggered on focusin or mouseover.
+			</desc>
+			<argument name="event" type="Event" null="true">
+			</argument>
+			<argument name="ui" type="Object">
+				<desc>
+					Extra event data for the ui tooltip open event
+				</desc>
+				<property name="tooltip" type="jQuery">
+					<desc>The generated tooltip element</desc>
+				</property>
+			</argument>
+		</event>
+	</events>
+	<theming>
+		TODO
+	</theming>
+	<example>
+        <desc>Create a tooltip on the document, using event delegation for all elements with a title attribute.</desc>
+        <code><![CDATA[
+	$(document).tooltip();
+]]></code>
+		<html><![CDATA[<p>
+	<a href="#" title="Anchor description">Anchor text</a>
+	<input title="Input help" />
+</p>]]></html>
+	</example>
+	<example>
+        <desc>Create a tooltip on the paragraph element, matching all images with an alt attribute. Use the alt attribute as the tooltip's content for each image.</desc>
+        <code><![CDATA[
+	$("p").tooltip({
+		items: "img[alt]",
+		content: function() {
+			return $( this ).attr( "alt" );
+		}
+	});
+]]></code>
+		<html><![CDATA[<p>
+	<img src="images/st-stephens.jpg" alt="St. Stephen's Cathedral">
+	<img src="images/tower-bridge.jpg" alt="Tower Bridge">
+</p>]]></html>
+	</example>
+</entry>
