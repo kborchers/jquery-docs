@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../../entries2html.xsl" ?>
+<entry name="menu" namespace="fn" type="Widget" widgetnamespace="ui">
+	<desc>
+		Themeable menu with mouse and keyboard interactions for navigation.
+	</desc>
+	<longdesc>
+		<p>A menu can be created from any valid markup as long as the elements have a strict parent/child relationship and each menu item has an anchor. The most commonly used element is the unordered list (UL):</p>
+
+		<pre>&lt;ul id="menu"&gt;
+		    &lt;li&gt;&lt;a href="#"&gt;Item 1&lt;/a&gt;&lt;/li&gt;
+		    &lt;li&gt;&lt;a href="#"&gt;Item 2&lt;/a&gt;&lt;/li&gt;
+		    &lt;li&gt;&lt;a href="#"&gt;Item 3&lt;/a&gt;&lt;/li&gt;
+		    &lt;li&gt;&lt;a href="#"&gt;Item 4&lt;/a&gt;&lt;/li&gt;
+		    &lt;li&gt;&lt;a href="#"&gt;Item 5&lt;/a&gt;&lt;/li&gt;
+		&lt;/div&gt;</pre>
+
+		<p>If you use a structure other than UL/LI, including using the same element for the menu and the menu items, use the menus option to specify a way to differentiate the two elements, eg. menus: 'div.menuElement'.</p>
+		<p>Any menu item can be disabled by adding the ui-state-disabled class to that element.</p>
+	</longdesc>
+	<created>1.9</created>
+	<options>
+		<option name="menus" default="ul" type="String" default="ul">
+			<desc>Selector for the elements that serve as the menu container, including sub-menus.</desc>
+		</option>
+		<option name="position" type="Object" default="{ &#x22;my&#x22;: &#x22;top left&#x22;, &#x22;at&#x22;: &#x22;top right&#x22; }">
+			<desc>Using ui.position, sets where the sub-menus will open in relation to the activated item in the parent menu.</desc>
+		</option>
+	</options>
+	<methods>
+		<method name="refresh">
+			<desc>
+				Initializes sub-menus and menu items that have not already been initialized.
+			</desc>
+		</method>
+	</methods>
+	<events>
+		<event name="focus" type="menufocus">
+			<desc>
+				Triggered when a menu gains focus or when any menu item is activated via mouseover, click or keyboard interaction.
+			</desc>
+			<argument name="event" type="Event">
+				<desc>
+					Type depends on event option. Commonly would be focus, click or mouseover.
+				</desc>
+			</argument>
+			<argument name="item" type="jQuery">
+				<desc>
+					The menu item activated by the triggering event.
+				</desc>
+			</argument>
+		</event>
+		<event name="blur" type="menublur">
+			<desc>
+				Triggered when the menu loses focus.
+			</desc>
+			<argument name="event" type="Event">
+			</argument>
+		</event>
+	</events>
+	<!-- TODO wrap with 'examples'? -->
+	<example>
+        <desc>Initialize a menu with default options.</desc>
+        <code>
+	        <![CDATA[$("#menu").menu();]]>
+		</code>
+		<css>
+			<![CDATA[
+				.ui-menu {
+					width: 200px;
+					margin-bottom: 2em;
+					font-size:62.5%;
+				}
+			]]>
+		</css>
+		<html>
+			<![CDATA[<ul id="menu">
+				<li><a href="#">Item 1</a></li>
+				<li><a href="#">Item 2</a>
+					<ul>
+						<li><a href="#">Item 2-1</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Item 3</a></li>
+			</ul>]]>
+		</html>
+	</example>
+</entry>
