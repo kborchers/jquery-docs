@@ -7,31 +7,138 @@
 	<longdesc>
 		<p>A menu can be created from any valid markup as long as the elements have a strict parent/child relationship and each menu item has an anchor. The most commonly used element is the unordered list (UL):</p>
 
-		<pre>&lt;ul id="menu"&gt;
-		    &lt;li&gt;&lt;a href="#"&gt;Item 1&lt;/a&gt;&lt;/li&gt;
-		    &lt;li&gt;&lt;a href="#"&gt;Item 2&lt;/a&gt;&lt;/li&gt;
-		    &lt;li&gt;&lt;a href="#"&gt;Item 3&lt;/a&gt;&lt;/li&gt;
-		    &lt;li&gt;&lt;a href="#"&gt;Item 4&lt;/a&gt;&lt;/li&gt;
-		    &lt;li&gt;&lt;a href="#"&gt;Item 5&lt;/a&gt;&lt;/li&gt;
-		&lt;/div&gt;</pre>
+		<pre>
+			<![CDATA[
+				<ul id="menu">
+					<li><a href="#">Item 1</a></li>
+					<li><a href="#">Item 2</a></li>
+					<li><a href="#">Item 3</a></li>
+					<li><a href="#">Item 4</a></li>
+					<li><a href="#">Item 5</a></li>
+				</ul>
+			]]>
+		</pre>
 
-		<p>If you use a structure other than UL/LI, including using the same element for the menu and the menu items, use the menus option to specify a way to differentiate the two elements, eg. menus: 'div.menuElement'.</p>
+		<p>If you use a structure other than UL/LI, including using the same element for the menu and the menu items, use the <code>menus</code> option to specify a way to differentiate the two elements, eg. <code>menus: 'div.menuElement'</code>.</p>
+
 		<p>Any menu item can be disabled by adding the ui-state-disabled class to that element.</p>
 	</longdesc>
 	<created>1.9</created>
 	<options>
-		<option name="menus" default="ul" type="String" default="ul">
+		<option name="menus" default="ul" type="String">
 			<desc>Selector for the elements that serve as the menu container, including sub-menus.</desc>
 		</option>
-		<option name="position" type="Object" default="{ &#x22;my&#x22;: &#x22;top left&#x22;, &#x22;at&#x22;: &#x22;top right&#x22; }">
-			<desc>Using ui.position, sets where the sub-menus will open in relation to the activated item in the parent menu.</desc>
+		<option name="position" type="Object" default="{ my: 'top left', at: 'top right' }">
+			<desc>Using the Position utility, sets where the sub-menus will open in relation to the activated item in the parent menu.</desc>
 		</option>
 	</options>
 	<methods>
 		<method name="refresh">
 			<desc>
-				Initializes sub-menus and menu items that have not already been initialized.
+				Initializes sub-menus and menu items that have not already been initialized. New menu items, including sub-menus can be added to the menu or all of the contents of the menu can be replaced and then initialized with the refresh method.
 			</desc>
+		</method>
+		<method name="focus">
+			<desc>
+				Activate a particular menu item, begin opening any sub-menu if present and triggers the menu focus event.
+			</desc>
+			<argument name="event" type="Event" optional="false">
+				<desc>What triggered the method.</desc>
+			</argument>
+			<argument name="item" type="jQuery" optional="false">
+				<desc>The menu item to "activate".</desc>
+			</argument>
+		</method>
+		<method name="blur">
+			<desc>
+				Remove focus from a menu and reset any active element styles.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="collapseAll">
+			<desc>
+				Close all open sub-menus.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+			<argument name="all" type="Boolean" optional="true">
+				<desc>Indicates whether all sub-menus should be closed or only sub-menus below and including the menu that is or contains the target of the triggering event.</desc>
+			</argument>
+		</method>
+		<method name="collapse">
+			<desc>
+				Close the currently active sub-menu.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="expand">
+			<desc>
+				Open the sub-menu below the currently active item, if it exists.
+			</desc>
+			<argument name="event" type="Event" optional="false">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="next">
+			<desc>
+				Move active state to next menu item.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="previous">
+			<desc>
+				Move active state to previous menu item.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="nextPage">
+			<desc>
+				Move active state to first menu item below the bottom of a scrollable menu or the last item if not scrollable.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="previousPage">
+			<desc>
+				Move active state to first menu item above the top of a scrollable menu or the first item if not scrollable.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="isFirstItem">
+			<desc>
+				Returns a boolean value stating whether or not the currently active item is the first item in the menu.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="isLastItem">
+			<desc>
+				Returns a boolean value stating whether or not the currently active item is the last item in the menu.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
+		</method>
+		<method name="select">
+			<desc>
+				Select the currently active menu item and collapse all sub-menus.
+			</desc>
+			<argument name="event" type="Event" optional="true">
+				<desc>What triggered the method.</desc>
+			</argument>
 		</method>
 	</methods>
 	<events>
@@ -44,9 +151,9 @@
 					Type depends on event option. Commonly would be focus, click or mouseover.
 				</desc>
 			</argument>
-			<argument name="item" type="jQuery">
+			<argument name="ui" type="Object">
 				<desc>
-					The menu item activated by the triggering event.
+					Extra event data for the ui menu focus event.
 				</desc>
 			</argument>
 		</event>
@@ -55,6 +162,29 @@
 				Triggered when the menu loses focus.
 			</desc>
 			<argument name="event" type="Event">
+				<desc>
+					Type depends on event option. Commonly would be blur or click.
+				</desc>
+			</argument>
+			<argument name="ui" type="Object">
+				<desc>
+					Extra event data for the ui menu blur event.
+				</desc>
+			</argument>
+		</event>
+		<event name="select" type="menuselect">
+			<desc>
+				Triggered when a menu item is selected either via click or enter key.
+			</desc>
+			<argument name="event" type="Event">
+				<desc>
+					Type depends on event option and can be either click or keyup.
+				</desc>
+			</argument>
+			<argument name="ui" type="Object">
+				<desc>
+					Exra event data for the ui menu select event.
+				</desc>
 			</argument>
 		</event>
 	</events>
@@ -62,7 +192,7 @@
 	<example>
         <desc>Initialize a menu with default options.</desc>
         <code>
-	        <![CDATA[$("#menu").menu();]]>
+	        $("#menu").menu();
 		</code>
 		<css>
 			<![CDATA[
