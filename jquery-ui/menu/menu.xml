@@ -12,7 +12,15 @@
 				<ul id="menu">
 					<li><a href="#">Item 1</a></li>
 					<li><a href="#">Item 2</a></li>
-					<li><a href="#">Item 3</a></li>
+					<li><a href="#">Item 3</a>
+						<ul>
+							<li><a href="#">Item 3-1</a></li>
+							<li><a href="#">Item 3-2</a></li>
+							<li><a href="#">Item 3-3</a></li>
+							<li><a href="#">Item 3-4</a></li>
+							<li><a href="#">Item 3-5</a></li>
+						</ul>
+					</li>
 					<li><a href="#">Item 4</a></li>
 					<li><a href="#">Item 5</a></li>
 				</ul>
@@ -40,7 +48,7 @@
 		</method>
 		<method name="focus">
 			<desc>
-				Activate a particular menu item, begin opening any sub-menu if present and triggers the menu focus event.
+				Activate a particular menu item, begin opening any sub-menu if present and trigger the menu focus event.
 			</desc>
 			<argument name="event" type="Event" optional="false">
 				<desc>What triggered the method.</desc>
@@ -51,7 +59,7 @@
 		</method>
 		<method name="blur">
 			<desc>
-				Remove focus from a menu and reset any active element styles.
+				Remove focus from a menu, reset any active element styles and trigger the menu blur event.
 			</desc>
 			<argument name="event" type="Event" optional="true">
 				<desc>What triggered the method.</desc>
@@ -120,21 +128,15 @@
 			<desc>
 				Returns a boolean value stating whether or not the currently active item is the first item in the menu.
 			</desc>
-			<argument name="event" type="Event" optional="true">
-				<desc>What triggered the method.</desc>
-			</argument>
 		</method>
 		<method name="isLastItem">
 			<desc>
 				Returns a boolean value stating whether or not the currently active item is the last item in the menu.
 			</desc>
-			<argument name="event" type="Event" optional="true">
-				<desc>What triggered the method.</desc>
-			</argument>
 		</method>
 		<method name="select">
 			<desc>
-				Select the currently active menu item and collapse all sub-menus.
+				Select the currently active menu item, collapse all sub-menus and trigger the menu select event.
 			</desc>
 			<argument name="event" type="Event" optional="true">
 				<desc>What triggered the method.</desc>
@@ -146,45 +148,48 @@
 			<desc>
 				Triggered when a menu gains focus or when any menu item is activated via mouseover, click or keyboard interaction.
 			</desc>
-			<argument name="event" type="Event">
-				<desc>
-					Type depends on event option. Commonly would be focus, click or mouseover.
-				</desc>
-			</argument>
+			<argument name="event" type="Event"></argument>
 			<argument name="ui" type="Object">
 				<desc>
 					Extra event data for the ui menu focus event.
 				</desc>
+				<property name="item">
+					<desc>
+						The currently active menu item.
+					</desc>
+				</property>
 			</argument>
 		</event>
 		<event name="blur" type="menublur">
 			<desc>
 				Triggered when the menu loses focus.
 			</desc>
-			<argument name="event" type="Event">
-				<desc>
-					Type depends on event option. Commonly would be blur or click.
-				</desc>
-			</argument>
+			<argument name="event" type="Event"></argument>
 			<argument name="ui" type="Object">
 				<desc>
 					Extra event data for the ui menu blur event.
 				</desc>
+				<property name="item">
+					<desc>
+						The currently active menu item.
+					</desc>
+				</property>
 			</argument>
 		</event>
 		<event name="select" type="menuselect">
 			<desc>
 				Triggered when a menu item is selected either via click or enter key.
 			</desc>
-			<argument name="event" type="Event">
-				<desc>
-					Type depends on event option and can be either click or keyup.
-				</desc>
-			</argument>
+			<argument name="event" type="Event"></argument>
 			<argument name="ui" type="Object">
 				<desc>
 					Exra event data for the ui menu select event.
 				</desc>
+				<property name="item">
+					<desc>
+						The currently active menu item.
+					</desc>
+				</property>
 			</argument>
 		</event>
 	</events>
